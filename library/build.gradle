@@ -1,5 +1,14 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.novoda.bintray-release'
+publish {
+    repoName = 'common'//远程仓库名字,不指明，默认是上传到maven
+    userOrg = 'zhx'//bintray.com用户名
+    groupId = 'org.zhx.common'//jcenter上的路径,bintray上创建Package时填写的Version control项
+    artifactId = 'bgStart'//项目名称，bintray上创建Package时填写的Name项
+    publishVersion = '1.0.0'//版本号
+    desc = 'easy background startActivity'//描述，不重要
+    website = 'https://github.com/zhoulinxue/BGStart.git'//网站，
+}
 android {
     compileSdkVersion 29
 
