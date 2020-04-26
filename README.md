@@ -21,7 +21,7 @@ Androidx:
 android.useAndroidX=true
 android.enableJetifier=true
 ```
-##程序使用：
+## 程序使用：
 1、使用之前 先申请权限：
 ```
  BgStart bgStart = new IBgStartImpl();
