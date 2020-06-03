@@ -43,7 +43,7 @@ android.enableJetifier=true
             }
         });
 ```
-2、当需要 后台启动页面时 调用以下dai：
+2、当需要 后台启动页面时 调用以下代码：
 ```
   Intent intent = new Intent(MainActivity.this, B.class);
                 bgStart.startActivity(MainActivity.this, intent, B.class.getName());
