@@ -42,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //    @Override
+        @Override
     protected void onStop() {
         super.onStop();
+        //模拟 后台 启动页面  当 按下 home 建 1秒后 弹出 界面
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
