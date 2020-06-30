@@ -1,4 +1,4 @@
-package org.zhx.common.bgstart.library;
+package org.zhx.common.bgstart.library.utils;
 
 import android.app.AppOpsManager;
 import android.content.Context;

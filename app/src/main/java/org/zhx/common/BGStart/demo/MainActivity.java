@@ -1,6 +1,5 @@
 package org.zhx.common.BGStart.demo;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,10 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import org.zhx.common.bgstart.library.IBgStartImpl;
-import org.zhx.common.bgstart.library.Miui;
-import org.zhx.common.bgstart.library.SystemAlertWindow;
-import org.zhx.common.bgstart.library.PermissionUtil;
+import org.zhx.common.bgstart.library.impl.OverLayImpl;
+import org.zhx.common.bgstart.library.utils.Miui;
 import org.zhx.common.bgstart.library.api.BgStart;
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
 
@@ -22,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BgStart bgStart = new IBgStartImpl();
-        Log.e("RAG", Miui.isAllowed(this)+"");
+        BgStart bgStart = new OverLayImpl();
+        Log.e("RAG", Miui.isAllowed(this) + "");
         bgStart.requestStartPermisstion(this, new PermissionLisenter() {
             @Override
             public void onGranted() {
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-        @Override
+    @Override
     protected void onStop() {
         super.onStop();
         //模拟 后台 启动页面  当 按下 home 建 1秒后 弹出 界面
@@ -50,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(MainActivity.this, B.class);
-                new IBgStartImpl().startActivity(MainActivity.this, intent, B.class.getName());
+                new OverLayImpl().startActivity(MainActivity.this, intent, B.class.getName());
             }
         }, 1000);
     }

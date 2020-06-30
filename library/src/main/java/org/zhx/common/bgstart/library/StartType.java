@@ -8,5 +8,5 @@ package org.zhx.common.bgstart.library;
  * Description:
  */
 public enum StartType {
-    FLOAT_WINDOW
+    FLOAT_WINDOW,NOTIFYCATION
 }

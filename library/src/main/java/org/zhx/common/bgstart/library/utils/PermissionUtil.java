@@ -1,8 +1,10 @@
-package org.zhx.common.bgstart.library;
+package org.zhx.common.bgstart.library.utils;
 
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.provider.Settings;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.lang.reflect.Method;
 
@@ -23,7 +26,7 @@ import java.lang.reflect.Method;
  */
 public class PermissionUtil {
 
-    public  static boolean hasPermission(Context context) {
+    public static boolean hasPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return Settings.canDrawOverlays(context);
         } else {
@@ -80,10 +83,8 @@ public class PermissionUtil {
             mgr.removeView(viewToAdd);
             return true;
         } catch (Exception e) {
-            Log.e("hasPermissionForO e:" , e.toString());
+            Log.e("hasPermissionForO e:", e.toString());
         }
         return false;
     }
-
-
 }

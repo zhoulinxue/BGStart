@@ -16,4 +16,6 @@ public interface BgStart {
 
     public void requestStartPermisstion(Activity activity, PermissionLisenter listener);
 
+    public void req(Activity activity, PermissionLisenter lisenter);
+
 }

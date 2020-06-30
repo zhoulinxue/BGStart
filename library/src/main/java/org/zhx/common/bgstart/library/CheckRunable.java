@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import org.zhx.common.bgstart.library.api.ShowSource;
+import org.zhx.common.bgstart.library.utils.Miui;
+import org.zhx.common.bgstart.library.utils.PermissionUtil;
 
 /**
  * Copyright (C), 2015-2020
