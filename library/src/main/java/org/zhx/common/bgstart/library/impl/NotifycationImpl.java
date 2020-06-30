@@ -28,6 +28,7 @@ public class NotifycationImpl implements BgStart {
     @Override
     public void startActivity(Activity context, Intent intent, String className) {
         //TODO  show  notifycation  View
+
     }
 
     @Override
