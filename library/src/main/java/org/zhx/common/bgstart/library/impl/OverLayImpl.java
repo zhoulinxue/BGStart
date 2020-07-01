@@ -8,9 +8,11 @@ import android.text.TextUtils;
 import org.zhx.common.bgstart.library.BridgeActivity;
 import org.zhx.common.bgstart.library.BridgeBroadcast;
 import org.zhx.common.bgstart.library.CheckRunable;
+import org.zhx.common.bgstart.library.CustomActivityManager;
 import org.zhx.common.bgstart.library.StartType;
 import org.zhx.common.bgstart.library.SystemAlertWindow;
 import org.zhx.common.bgstart.library.api.BgStart;
+import org.zhx.common.bgstart.library.api.OnStartResultLisenter;
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
 import org.zhx.common.bgstart.library.utils.Miui;
 import org.zhx.common.bgstart.library.utils.PermissionUtil;
@@ -29,6 +31,44 @@ public class OverLayImpl implements BgStart {
     private CheckRunable mRunnable;
 
     @Override
+    public void checkPermisstion(Activity activity, OnStartResultLisenter lisenter) {
+        if (!CustomActivityManager.isAppBackGround()) {
+            if (lisenter != null) {
+                lisenter.onSuc();
+            }
+            return;
+        }
+        if (activity == null || activity.isFinishing()) {
+            if (lisenter != null) {
+                lisenter.onError("activity..can not be null or finished");
+            }
+            return;
+        }
+        if (Miui.isMIUI()) {
+            if (Miui.isAllowed(activity)) {
+                if (lisenter != null) {
+                    lisenter.onSuc();
+                }
+            } else {
+                if (lisenter != null) {
+                    check(activity, lisenter);
+                }
+            }
+        } else if (PermissionUtil.hasPermission(activity)) {
+            if (lisenter != null) {
+                lisenter.onSuc();
+            }
+        } else {
+            if (lisenter != null) {
+
+            }
+        }
+    }
+
+    private void check(Activity activity, OnStartResultLisenter lisenter) {
+    }
+
+    @Override
     public void startActivity(Activity context, Intent intent, String className) {
         if (context == null || intent == null || TextUtils.isEmpty(className)) {
             return;
@@ -38,22 +78,27 @@ public class OverLayImpl implements BgStart {
                 context.startActivity(intent);
             } else {
                 //TODO custom notify
+                checkIntent(className, intent, context);
             }
         } else if (PermissionUtil.hasPermission(context)) {
             context.startActivity(intent);
         } else {
             context.startActivity(intent);
-            //如果未打开界面  TIME_DELAY  时间后 弹出提示
-            if (mRunnable == null) {
-                mRunnable = new CheckRunable(className, intent, context);
-            }
-            if (mRunnable.isPostDelayIsRunning()) {
-                mHhandler.removeCallbacks(mRunnable);
-            }
-            mRunnable.setPostDelayIsRunning(true);
-            mHhandler.postDelayed(mRunnable, TIME_DELAY);
+            checkIntent(className, intent, context);
         }
 
+    }
+
+    private void checkIntent(String mClassName, Intent mIntent, Activity mContext) {
+        //如果未打开界面  TIME_DELAY  时间后 弹出提示
+        if (mRunnable == null) {
+            mRunnable = new CheckRunable(mClassName, mIntent, mContext);
+        }
+        if (mRunnable.isPostDelayIsRunning()) {
+            mHhandler.removeCallbacks(mRunnable);
+        }
+        mRunnable.setPostDelayIsRunning(true);
+        mHhandler.postDelayed(mRunnable, TIME_DELAY);
     }
 
     @Override

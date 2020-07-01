@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 systemStyle(MainActivity.this, "", NOTIFY_FLAGS);
-//                startService(new Intent(MainActivity.this, NotificationService.class));
-//                Intent intent = new Intent(MainActivity.this, B.class);
-//                new OverLayImpl().startActivity(MainActivity.this, intent, B.class.getName());
+                startService(new Intent(MainActivity.this, NotificationService.class));
+                Intent intent = new Intent(MainActivity.this, B.class);
+                new OverLayImpl().startActivity(MainActivity.this, intent, B.class.getName());
             }
         }, 1000);
     }

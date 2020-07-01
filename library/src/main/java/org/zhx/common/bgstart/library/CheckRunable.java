@@ -35,17 +35,17 @@ public class CheckRunable implements Runnable {
         // 判断要打开的Activity是不是已经在栈顶了
         if (!isActivityOnTop()) {
             //TODO 判断rom
-            if (Miui.isMIUI()) {
-                mSource = new NotifySource();
-            } else {
-                switch (mType) {
-                    case FLOAT_WINDOW:
-                        if (!PermissionUtil.hasPermission(mContext)) {
-                            mSource = new FloatSource();
-                        }
-                        break;
-                }
-            }
+//            if (Miui.isMIUI()) {
+//                mSource = new NotifySource();
+//            } else {
+//                switch (mType) {
+//                    case FLOAT_WINDOW:
+//                        if (!PermissionUtil.hasPermission(mContext)) {
+//                            mSource = new FloatSource();
+//                        }
+//                        break;
+//                }
+//            }
 
         }
     }

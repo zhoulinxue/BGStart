@@ -12,6 +12,8 @@ import android.content.Intent;
  */
 public interface BgStart {
 
+    public void checkPermisstion(Activity activity,OnStartResultLisenter lisenter);
+
     public void startActivity(Activity context, Intent intent, String className);
 
     public void requestStartPermisstion(Activity activity, PermissionLisenter listener);
