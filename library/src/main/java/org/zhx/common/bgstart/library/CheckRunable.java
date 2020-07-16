@@ -1,6 +1,8 @@
 package org.zhx.common.bgstart.library;
 
 import android.text.TextUtils;
+import android.util.Log;
+
 import org.zhx.common.bgstart.library.api.ActivityCheckLisenter;
 
 /**
@@ -38,6 +40,7 @@ public class CheckRunable implements Runnable {
                 result = true;
             }
         }
+        Log.e("BgStart","isActivityOnTop  "+System.currentTimeMillis());
         return result;
     }
 

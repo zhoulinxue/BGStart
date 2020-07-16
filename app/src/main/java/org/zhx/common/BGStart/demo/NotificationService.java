@@ -95,7 +95,7 @@ public class NotificationService extends Service {
         //显示在通知栏上的小图标
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mBuilder.setWhen(System.currentTimeMillis());
-        Intent notifyIntent = new Intent(this, B.class);
+        Intent notifyIntent = new Intent(this, TargetActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pedNotify = PendingIntent.getActivity(this, 1, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pedNotify);//点击通知栏后的意图

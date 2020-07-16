@@ -21,7 +21,7 @@ public class MiuiSource implements ShowSource {
     public void show(final Activity context, final PermissionLisenter permissionListener) {
         new AlertDialog.Builder(context).setCancelable(false)
                 .setTitle(R.string.title_dialog)
-                .setMessage(R.string.message_overlay_failed)
+                .setMessage(R.string.message_background_failed)
                 .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -37,7 +37,6 @@ public class MiuiSource implements ShowSource {
                         if (permissionListener != null)
                             permissionListener.cancel();
                     }
-                })
-                .show();
+                }).show();
     }
 }

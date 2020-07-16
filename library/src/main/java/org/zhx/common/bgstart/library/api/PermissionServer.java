@@ -15,5 +15,5 @@ import android.app.Activity;
  * @Version:1.0
  */
 public interface PermissionServer {
-    public void checkPermisstion(Activity activity, PermissionLisenter lisenter);
+    public void checkPermisstion(Activity activity, PermissionLisenter lisenter,String...params);
 }

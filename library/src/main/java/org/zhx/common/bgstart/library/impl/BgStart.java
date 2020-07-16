@@ -8,8 +8,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -19,9 +21,9 @@ import org.zhx.common.bgstart.library.BridgeActivity;
 import org.zhx.common.bgstart.library.BridgeBroadcast;
 import org.zhx.common.bgstart.library.CheckRunable;
 import org.zhx.common.bgstart.library.CustomActivityManager;
+import org.zhx.common.bgstart.library.R;
 import org.zhx.common.bgstart.library.SystemAlertWindow;
 import org.zhx.common.bgstart.library.api.ActivityCheckLisenter;
-import org.zhx.common.bgstart.library.api.BgStart;
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
 import org.zhx.common.bgstart.library.api.PermissionServer;
 import org.zhx.common.bgstart.library.utils.Miui;
@@ -35,26 +37,36 @@ import org.zhx.common.bgstart.library.utils.PermissionUtil;
  * Date: 2020/4/17 15:02
  * Description:
  */
-public class OverLayImpl implements BgStart {
+public class BgStart {
     private String TAG = "BgStart";
-    private static final int TIME_DELAY = 600;
+    private static final int TIME_DELAY = 5000;
     private Handler mHhandler = new Handler();
     private CheckRunable mRunnable;
     public static int NOTIFY_FLAGS = 1000118;
-    private static final String CHANNEL_ID = "12345";
+    public static final String CHANNEL_ID = "12345";
     //通知管理器
     private NotificationManager nm;
     private PermissionServer mServer;
+    private static BgStart overLay = new BgStart();
+    private NotificationCompat.Builder mBuilder;
 
-    public OverLayImpl(Context context) {
-        nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        createUrgentNotificationChannel();
-        mServer = new PermissionImpl();
+
+    public static BgStart getInstance() {
+        return overLay;
+    }
+
+    public void init(Context context, NotificationCompat.Builder builder) {
+        this.mBuilder = builder;
+        if (nm == null) {
+            nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            createUrgentNotificationChannel();
+            mServer = new PermissionImpl();
+        }
     }
 
     private void createUrgentNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "app", NotificationManager.IMPORTANCE_HIGH);
             channel.enableLights(true);
             channel.enableVibration(true);
             channel.setLightColor(Color.RED);
@@ -63,7 +75,6 @@ public class OverLayImpl implements BgStart {
         }
     }
 
-    @Override
     public void startActivity(final Activity context, final Intent intent, final String className) {
         if (context == null || intent == null || TextUtils.isEmpty(className)) {
             return;
@@ -71,12 +82,14 @@ public class OverLayImpl implements BgStart {
         if (!CustomActivityManager.isAppBackGround()) {
             //应用在前台时 直接 打开页面
             context.startActivity(intent);
+            Log.e(TAG, "前台_跳转成功");
             return;
         }
         if (Miui.isMIUI()) {
             //优先 使用 通知权限去打开 界面
             if (NotificationsUtils.isNotificationEnabled(context)) {
                 //尝试 使用 notifycation 打开 界面
+                Log.e(TAG, "通知_跳转");
                 notifyMiUi(context, intent);
                 //检测 界面是否已经打开
                 checkIntent(className, new ActivityCheckLisenter() {
@@ -86,6 +99,7 @@ public class OverLayImpl implements BgStart {
                         if (!isSuc) {
                             startMiuiByFloat(context, intent, className);
                         } else {
+                            Log.e(TAG, "notify_跳转成功");
                             nm.cancel(NOTIFY_FLAGS);
                         }
                     }
@@ -93,32 +107,46 @@ public class OverLayImpl implements BgStart {
             } else {
                 startMiuiByFloat(context, intent, className);
             }
-        } else if (PermissionUtil.hasPermission(context)) {
-            // 是否 获取了 悬浮窗权限
-            context.startActivity(intent);
         } else {
-            context.startActivity(intent);
-            checkIntent(className, new ActivityCheckLisenter() {
-                @Override
-                public void startResult(boolean isSuc) {
-                    if (!isSuc) {
-                        Log.e(TAG, className + "androidQ 权限限制 从后台启动页面 请先允许【悬浮窗】 权限...");
-                    }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (PermissionUtil.hasPermission(context)) {
+                    // 是否 获取了 悬浮窗权限
+                    context.startActivity(intent);
+                    Log.e(TAG, "悬浮窗权限_跳转成功 " + System.currentTimeMillis());
+                } else {
+                    nomalCheck(context, intent, className);
                 }
-            });
+            } else {
+                nomalCheck(context, intent, className);
+            }
         }
-
     }
 
-    @Override
-    public void requestStartPermisstion(final Activity activity, final PermissionLisenter listener) {
+    private void nomalCheck(Activity context, Intent intent, final String className) {
+        context.startActivity(intent);
+        Log.e(TAG, "普通_跳转成功 " + System.currentTimeMillis());
+        checkIntent(className, new ActivityCheckLisenter() {
+            @Override
+            public void startResult(boolean isSuc) {
+                if (!isSuc) {
+                    Log.e(TAG, className + "   androidQ 权限限制 从后台启动页面 请先允许【悬浮窗】 权限...");
+                }
+            }
+        });
+    }
+
+    public void requestStartPermisstion(final Activity activity, final PermissionLisenter listener,String...params) {
         PermissionLisenter li = new PermissionLisenter() {
             @Override
             public void onGranted() {
-                BridgeBroadcast bridgeBroadcast = new BridgeBroadcast(listener);
-                bridgeBroadcast.register(activity);
-                Intent intent = new Intent(activity, BridgeActivity.class);
-                activity.startActivityForResult(intent, SystemAlertWindow.REQUEST_OVERLY);
+                if (Miui.isMIUI()) {
+                    PermissionUtil.jumpToPermissionsEditorActivity(activity);
+                } else {
+                    BridgeBroadcast bridgeBroadcast = new BridgeBroadcast(listener);
+                    bridgeBroadcast.register(activity);
+                    Intent intent = new Intent(activity, BridgeActivity.class);
+                    activity.startActivityForResult(intent, SystemAlertWindow.REQUEST_OVERLY);
+                }
             }
 
             @Override
@@ -133,13 +161,30 @@ public class OverLayImpl implements BgStart {
 
             }
         };
-        mServer.checkPermisstion(activity, li);
+        if (Miui.isMIUI()) {
+            if (Miui.isAllowed(activity)) {
+                if (listener != null) {
+                    listener.onGranted();
+                }
+            } else {
+                mServer.checkPermisstion(activity, li, params);
+            }
+        } else if (PermissionUtil.hasPermission(activity)) {
+            if (listener != null) {
+                listener.onGranted();
+            }
+        } else {
+            mServer.checkPermisstion(activity, li, params);
+        }
     }
+
+
 
     private void startMiuiByFloat(Activity context, Intent intent, String className) {
         if (Miui.isAllowed(context)) {
             // 已经有 【后台启动页面】
             context.startActivity(intent);
+            Log.e(TAG, "Miui_跳转成功 " + System.currentTimeMillis());
         } else {
             Log.e(TAG, className + "页面启动失败，没有获取 【后台启动页面】 的权限...");
         }
@@ -152,13 +197,14 @@ public class OverLayImpl implements BgStart {
      * @param notifyIntent
      */
     private void notifyMiUi(Activity activity, Intent notifyIntent) {
-        //实例化通知栏构造器。
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(activity, CHANNEL_ID);
-        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pedNotify = PendingIntent.getActivity(activity, 1, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setFullScreenIntent(pedNotify, true);
-        Notification notification = mBuilder.build();
-        nm.notify(NOTIFY_FLAGS, notification);
+        if (mBuilder != null) {
+            //实例化通知栏构造器。
+            notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pedNotify = PendingIntent.getActivity(activity, 1, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.setFullScreenIntent(pedNotify, true);
+            Notification notification = mBuilder.build();
+            nm.notify(NOTIFY_FLAGS, notification);
+        }
     }
 
     /**
@@ -177,6 +223,7 @@ public class OverLayImpl implements BgStart {
             mHhandler.removeCallbacks(mRunnable);
         }
         mRunnable.setPostDelayIsRunning(true);
+        Log.e(TAG, "开始计时  " + System.currentTimeMillis());
         mHhandler.postDelayed(mRunnable, TIME_DELAY);
     }
 

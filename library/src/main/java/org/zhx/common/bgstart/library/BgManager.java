@@ -1,9 +1,17 @@
 package org.zhx.common.bgstart.library;
 
-import android.util.Log;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
+import android.content.Context;
+import android.os.Bundle;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
+import org.zhx.common.bgstart.library.api.AppStateCallback;
+import org.zhx.common.bgstart.library.impl.BgStart;
 
 /**
  * @ProjectName: BGStart
@@ -17,24 +25,118 @@ import java.util.Map;
  * @UpdateRemark: 更新说明
  * @Version:1.0
  */
-public class BgManager {
+public class BgManager implements Application.ActivityLifecycleCallbacks {
+    private int activityCount = 0;
     private String TAG = BgManager.class.getSimpleName();
-    private Map<String, Object> models = new HashMap<>();
+    private static BgManager manager;
+    private AppStateCallback mCallback;
+    private Application.ActivityLifecycleCallbacks mlifcycle;
+    private NotificationCompat.Builder mBuilder;
 
-    public <T> T with(Class<T> service) {
-        if (service != null) {
-            Object object = models.get(service.getSimpleName());
-            if (object == null) {
-                Log.e(TAG, "creat  new Model" + service.getSimpleName());
-                try {
-                    object = service.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                models.put(service.getSimpleName(), object);
-            }
-            return (T) object;
+    public static BgManager getInstance() {
+        if (manager == null) {
+            manager = new BgManager();
         }
-        return null;
+        return manager;
+    }
+
+    public void init(Application app, NotificationCompat.Builder mBuilder) {
+        init(app, mBuilder, null, null);
+    }
+
+    public void init(Application app, NotificationCompat.Builder mBuilder, AppStateCallback callback) {
+        init(app, null, callback);
+    }
+
+    public void init(Application app, NotificationCompat.Builder mBuilder, Application.ActivityLifecycleCallbacks callback) {
+        init(app, mBuilder, callback, null);
+    }
+
+    public void init(Application app, NotificationCompat.Builder mBuilder, Application.ActivityLifecycleCallbacks lifecycleCallbacks, AppStateCallback callback) {
+        this.mlifcycle = lifecycleCallbacks;
+        this.mCallback = callback;
+        if (app != null) {
+            if (isMainProcess(app)) {
+                app.registerActivityLifecycleCallbacks(this);
+                BgStart.getInstance().init(app, mBuilder);
+            }
+        }
+
+    }
+
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivityCreated(activity, savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onActivityStarted(@NonNull Activity activity) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivityStarted(activity);
+        }
+        activityCount++;
+        if (activityCount == 1) {
+            //TODO  前台
+            if (mCallback != null) {
+                mCallback.onForground(activity);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResumed(@NonNull Activity activity) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivityResumed(activity);
+        }
+        CustomActivityManager.setTopActivity(activity);
+    }
+
+    @Override
+    public void onActivityPaused(@NonNull Activity activity) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivityPaused(activity);
+        }
+    }
+
+    @Override
+    public void onActivityStopped(@NonNull Activity activity) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivityStopped(activity);
+        }
+        activityCount--;
+        if (activityCount <= 0) {
+            //TODO 后台
+            CustomActivityManager.clearTopActivity();
+            if (mCallback != null) {
+                mCallback.onBackground(activity);
+            }
+        }
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivitySaveInstanceState(activity, outState);
+        }
+    }
+
+    @Override
+    public void onActivityDestroyed(@NonNull Activity activity) {
+        if (mlifcycle != null) {
+            mlifcycle.onActivityDestroyed(activity);
+        }
+    }
+
+    public boolean isMainProcess(Application application) {
+        int pid = android.os.Process.myPid();
+        ActivityManager activityManager = (ActivityManager) application.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return application.getApplicationInfo().packageName.equals(appProcess.processName);
+            }
+        }
+        return false;
     }
 }

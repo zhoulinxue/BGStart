@@ -1,6 +1,7 @@
 package org.zhx.common.bgstart.library.impl;
 
 import android.app.Activity;
+import android.os.Build;
 
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
 import org.zhx.common.bgstart.library.api.PermissionServer;
@@ -23,24 +24,26 @@ import org.zhx.common.bgstart.library.widgets.MiuiSource;
  */
 public class PermissionImpl implements PermissionServer {
     private ShowSource mSource;
+    private static final String MARK = Build.MANUFACTURER.toLowerCase();
 
     @Override
-    public void checkPermisstion(final Activity activity, final PermissionLisenter lisenter) {
+    public void checkPermisstion(final Activity activity, final PermissionLisenter lisenter, String... params) {
+
         if (Miui.isMIUI()) {
-            if (Miui.isAllowed(activity)) {
-                if (lisenter != null) {
-                    lisenter.onGranted();
-                }
-            } else {
-                mSource = new MiuiSource();
-            }
-        } else if (PermissionUtil.hasPermission(activity)) {
-            if (lisenter != null) {
-                lisenter.onGranted();
-            }
+            mSource = new MiuiSource();
         } else {
             mSource = new FloatSource();
         }
-        mSource.show(activity, lisenter);
+        boolean isShowNotice = false;
+        if (params != null) {
+            for (String str : params) {
+                if (MARK.equals(str) || "oppo".equals(str)) {
+                    isShowNotice = true;
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || isShowNotice) {
+            mSource.show(activity, lisenter);
+        }
     }
 }
