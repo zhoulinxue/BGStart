@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_dialog">提示：</string>
-    <string name="message_overlay_failed">还未允许【后台弹出页面】，功能不能正常使用 </string>
+    <string name="message_background_failed">还未允许【后台弹出页面】，功能不能正常使用 </string>
+    <string name="message_overlay_failed">还未允许【悬浮窗】权限，功能不能正常使用 </string>
     <string name="setting">立即设置</string>
     <string name="cancel">取消</string>
-    <string name="message_notify_failed" >还未允许【通知】权限，功能不能正常使用 </string>
+    <string name="message_notify_failed">还未允许【通知】权限，功能不能正常使用 </string>
 </resources>

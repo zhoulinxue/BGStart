@@ -1,12 +1,8 @@
 package org.zhx.common.BGStart.demo;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 
 import org.zhx.common.bgstart.library.StartMultApplication;
-import org.zhx.common.bgstart.library.StartType;
 
 /**
  * Copyright (C), 2015-2020

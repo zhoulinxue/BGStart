@@ -1,12 +1,7 @@
 package org.zhx.common.bgstart.library;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.text.TextUtils;
-
-import org.zhx.common.bgstart.library.api.ShowSource;
-import org.zhx.common.bgstart.library.utils.Miui;
-import org.zhx.common.bgstart.library.utils.PermissionUtil;
+import org.zhx.common.bgstart.library.api.ActivityCheckLisenter;
 
 /**
  * Copyright (C), 2015-2020
@@ -17,37 +12,22 @@ import org.zhx.common.bgstart.library.utils.PermissionUtil;
  */
 public class CheckRunable implements Runnable {
     private String mClassName;
-    private Intent mIntent;
     private boolean mPostDelayIsRunning;
-    private StartType mType;
-    private ShowSource mSource;
-    private Activity mContext;
+    private ActivityCheckLisenter mLisenter;
 
-    public CheckRunable(String mClassName, Intent mIntent, Activity mContext) {
+    public CheckRunable( String mClassName,ActivityCheckLisenter lisenter) {
         this.mClassName = mClassName;
-        this.mIntent = mIntent;
-        this.mContext = mContext;
+        this.mLisenter = lisenter;
     }
 
     @Override
     public void run() {
         mPostDelayIsRunning = false;
         // 判断要打开的Activity是不是已经在栈顶了
-        if (!isActivityOnTop()) {
-            //TODO 判断rom
-//            if (Miui.isMIUI()) {
-//                mSource = new NotifySource();
-//            } else {
-//                switch (mType) {
-//                    case FLOAT_WINDOW:
-//                        if (!PermissionUtil.hasPermission(mContext)) {
-//                            mSource = new FloatSource();
-//                        }
-//                        break;
-//                }
-//            }
-
+        if (mLisenter != null) {
+            mLisenter.startResult(isActivityOnTop());
         }
+
     }
 
     private boolean isActivityOnTop() {
