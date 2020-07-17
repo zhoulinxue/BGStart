@@ -40,6 +40,10 @@ public class BgManager implements Application.ActivityLifecycleCallbacks {
         return manager;
     }
 
+    public void init(Application app) {
+        init(app, null, null, null);
+    }
+
     public void init(Application app, NotificationCompat.Builder mBuilder) {
         init(app, mBuilder, null, null);
     }

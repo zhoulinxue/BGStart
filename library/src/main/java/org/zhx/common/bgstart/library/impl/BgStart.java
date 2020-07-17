@@ -8,10 +8,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,7 +19,6 @@ import org.zhx.common.bgstart.library.BridgeActivity;
 import org.zhx.common.bgstart.library.BridgeBroadcast;
 import org.zhx.common.bgstart.library.CheckRunable;
 import org.zhx.common.bgstart.library.CustomActivityManager;
-import org.zhx.common.bgstart.library.R;
 import org.zhx.common.bgstart.library.SystemAlertWindow;
 import org.zhx.common.bgstart.library.api.ActivityCheckLisenter;
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
@@ -87,7 +84,7 @@ public class BgStart {
         }
         if (Miui.isMIUI()) {
             //优先 使用 通知权限去打开 界面
-            if (NotificationsUtils.isNotificationEnabled(context)) {
+            if (NotificationsUtils.isNotificationEnabled(context) && mBuilder != null) {
                 //尝试 使用 notifycation 打开 界面
                 Log.e(TAG, "通知_跳转");
                 notifyMiUi(context, intent);
@@ -135,7 +132,7 @@ public class BgStart {
         });
     }
 
-    public void requestStartPermisstion(final Activity activity, final PermissionLisenter listener,String...params) {
+    public void requestStartPermisstion(final Activity activity, final PermissionLisenter listener, String... params) {
         PermissionLisenter li = new PermissionLisenter() {
             @Override
             public void onGranted() {
@@ -177,7 +174,6 @@ public class BgStart {
             mServer.checkPermisstion(activity, li, params);
         }
     }
-
 
 
     private void startMiuiByFloat(Activity context, Intent intent, String className) {
