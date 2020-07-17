@@ -12,7 +12,7 @@ allprojects {
 Androidx:
 ```
 	dependencies {
-	      implementation 'org.zhx.common:bgStart:1.0.0'
+	      implementation 'org.zhx.common:bgStart:1.1.0'
 	}
 ```
 注意：appcompat （未使用Androidx）引用：
@@ -22,11 +22,21 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 ## 程序使用：
+1、初始化 Application  onCreat中
+```
+ @Override
+    public void onCreate() {
+        super.onCreate();
+        BgManager.getInstance().init(this);
+    }
+```
+  2、AndroidManifest 中
+```
+  <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
+```
 1、使用之前 先申请权限：
 ```
- BgStart bgStart = new IBgStartImpl();
-        Log.e("RAG", Miui.isAllowed(this) + "");
-        bgStart.requestStartPermisstion(this, new PermissionLisenter() {
+  BgStart.getInstance().requestStartPermisstion(this, new PermissionLisenter() {
             @Override
             public void onGranted() {
                 Log.e(TAG, "onGranted");
@@ -45,6 +55,6 @@ android.enableJetifier=true
 ```
 2、当需要 后台启动页面时 调用以下代码：
 ```
-  Intent intent = new Intent(MainActivity.this, B.class);
-                bgStart.startActivity(MainActivity.this, intent, B.class.getName());
+   Intent intent = new Intent(MainActivity.this, TargetActivity.class);
+                 BgStart.getInstance().startActivity(MainActivity.this, intent, TargetActivity.class.getName());
 ```
