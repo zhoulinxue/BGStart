@@ -22,7 +22,13 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 ## 程序使用：
-1、初始化 Application  onCreat中
+
+1、AndroidManifest 中
+```
+  <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
+```
+
+2、初始化 Application  onCreat中
 ```
  @Override
     public void onCreate() {
@@ -30,11 +36,16 @@ android.enableJetifier=true
         BgManager.getInstance().init(this);
     }
 ```
-  2、AndroidManifest 中
+注：如果你的app  实现了 Application.ActivityLifecycleCallbacks 接口那边 这样初始化
 ```
-  <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
+@Override
+    public void onCreate() {
+        super.onCreate();
+      BgManager.getInstance().init(this,null,this);
+    }
 ```
-1、使用之前 先申请权限：
+
+3、使用之前 先申请权限：
 ```
   BgStart.getInstance().requestStartPermisstion(this, new PermissionLisenter() {
             @Override
@@ -53,7 +64,7 @@ android.enableJetifier=true
             }
         });
 ```
-2、当需要 后台启动页面时 调用以下代码：
+4、当需要 后台启动页面时 调用以下代码：
 ```
    Intent intent = new Intent(MainActivity.this, TargetActivity.class);
                  BgStart.getInstance().startActivity(MainActivity.this, intent, TargetActivity.class.getName());
