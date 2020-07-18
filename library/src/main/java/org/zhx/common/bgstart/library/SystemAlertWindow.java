@@ -28,23 +28,28 @@ public class SystemAlertWindow {
 
     public void start(int requestCode) {
         Intent intent;
-//         if (MARK.contains("xiaomi")) {
-//            intent = xiaomiApi(mSource);
-//        } else if (MARK.contains("oppo")) {
-//            intent = oppoApi(mSource);
-//        } else if (MARK.contains("vivo")) {
-//            intent = vivoApi(mSource);
-//        } else if (MARK.contains("meizu")) {
-//            intent = meizuApi(mSource);
-//        } else {
-//            intent = defaultApi(mSource);
-//        }
-        if (MARK.contains("meizu")) {
-            intent = meiZuApi(mSource);
-        } else {
-            intent = defaultApi(mSource);
-        }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (MARK.contains("meizu")) {
+                intent = meiZuApi(mSource);
+            } else {
+                intent = MdefaultApi(mSource);
+            }
+        } else {
+            if (MARK.contains("huawei")) {
+                intent = huaweiApi(mSource);
+            } else if (MARK.contains("xiaomi")) {
+                intent = xiaomiApi(mSource);
+            } else if (MARK.contains("oppo")) {
+                intent = oppoApi(mSource);
+            } else if (MARK.contains("vivo")) {
+                intent = vivoApi(mSource);
+            } else if (MARK.contains("meizu")) {
+                intent = meizuApi(mSource);
+            } else {
+                intent = LdefaultApi(mSource);
+            }
+        }
         try {
             mSource.startActivityForResult(intent, requestCode);
         } catch (Exception e) {
@@ -52,6 +57,12 @@ public class SystemAlertWindow {
             mSource.startActivityForResult(intent, requestCode);
         }
     }
+    private static Intent LdefaultApi(Context context) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        return intent;
+    }
+
 
 
     private Intent huaweiApi(Context context) {
@@ -71,7 +82,7 @@ public class SystemAlertWindow {
             return intent;
         }
 
-        return defaultApi(context);
+        return MdefaultApi(context);
     }
 
     private Intent xiaomiApi(Context context) {
@@ -86,7 +97,7 @@ public class SystemAlertWindow {
             return intent;
         }
 
-        return defaultApi(context);
+        return MdefaultApi(context);
     }
 
     private Intent oppoApi(Context context) {
@@ -108,7 +119,7 @@ public class SystemAlertWindow {
             return intent;
         }
 
-        return defaultApi(context);
+        return MdefaultApi(context);
     }
 
     private Intent vivoApi(Context context) {
@@ -124,7 +135,7 @@ public class SystemAlertWindow {
             return intent;
         }
 
-        return defaultApi(context);
+        return MdefaultApi(context);
     }
 
     private Intent meizuApi(Context context) {
@@ -135,7 +146,7 @@ public class SystemAlertWindow {
             return intent;
         }
 
-        return defaultApi(context);
+        return MdefaultApi(context);
     }
 
     private static Intent appDetailsApi(Context context) {
@@ -144,7 +155,7 @@ public class SystemAlertWindow {
         return intent;
     }
 
-    private static Intent defaultApi(Context context) {
+    private static Intent MdefaultApi(Context context) {
         Intent intent = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
@@ -165,7 +176,7 @@ public class SystemAlertWindow {
             return intent;
         }
 
-        return defaultApi(context);
+        return MdefaultApi(context);
     }
 
     private static boolean hasActivity(Context context, Intent intent) {
