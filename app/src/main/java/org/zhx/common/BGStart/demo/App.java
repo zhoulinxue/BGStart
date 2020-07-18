@@ -34,7 +34,7 @@ public class App extends Application {
         // 如果您的应用 实现了  Application.ActivityLifecycleCallbacks 接口
         //BgManager.getInstance().init(this,null,this);
         //如果你想监听 app 前后台 状态切换
-        BgManager.getInstance().init(this, null, null, new AppStateCallback() {
+        BgManager.getInstance().init(this,  null, new AppStateCallback() {
             @Override
             public void onForground(Activity activity) {
 
