@@ -33,11 +33,9 @@ android {
         abortOnError false
     }
 }
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    configurations.implementation.setCanBeResolved(true)
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator)) + configurations.implementation
+tasks.withType(Javadoc) { // 新增
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
 }
 
 dependencies {
