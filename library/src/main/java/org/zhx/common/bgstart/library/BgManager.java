@@ -44,28 +44,24 @@ public class BgManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public void init(Application app) {
-        init(app, null, null, null);
+        init(app, null, null);
     }
 
-    public void init(Application app, NotificationCompat.Builder mBuilder) {
-        init(app, mBuilder, null, null);
+    public void init(Application app, AppStateCallback callback) {
+        init(app, callback);
     }
 
-    public void init(Application app, NotificationCompat.Builder mBuilder, AppStateCallback callback) {
-        init(app, null, callback);
+    public void init(Application app, Application.ActivityLifecycleCallbacks callback) {
+        init(app, callback, null);
     }
 
-    public void init(Application app, NotificationCompat.Builder mBuilder, Application.ActivityLifecycleCallbacks callback) {
-        init(app, mBuilder, callback, null);
-    }
-
-    public void init(Application app, NotificationCompat.Builder mBuilder, Application.ActivityLifecycleCallbacks lifecycleCallbacks, AppStateCallback callback) {
+    public void init(Application app, Application.ActivityLifecycleCallbacks lifecycleCallbacks, AppStateCallback callback) {
         this.mlifcycle = lifecycleCallbacks;
         this.mCallback = callback;
         if (app != null) {
             if (isMainProcess(app)) {
                 app.registerActivityLifecycleCallbacks(this);
-                BgStart.getInstance().init(app, mBuilder);
+                BgStart.getInstance().init(app, null);
             }
         }
 
