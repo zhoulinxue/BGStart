@@ -28,17 +28,23 @@ public class SystemAlertWindow {
 
     public void start(int requestCode) {
         Intent intent;
-         if (MARK.contains("xiaomi")) {
-            intent = xiaomiApi(mSource);
-        } else if (MARK.contains("oppo")) {
-            intent = oppoApi(mSource);
-        } else if (MARK.contains("vivo")) {
-            intent = vivoApi(mSource);
-        } else if (MARK.contains("meizu")) {
-            intent = meizuApi(mSource);
+//         if (MARK.contains("xiaomi")) {
+//            intent = xiaomiApi(mSource);
+//        } else if (MARK.contains("oppo")) {
+//            intent = oppoApi(mSource);
+//        } else if (MARK.contains("vivo")) {
+//            intent = vivoApi(mSource);
+//        } else if (MARK.contains("meizu")) {
+//            intent = meizuApi(mSource);
+//        } else {
+//            intent = defaultApi(mSource);
+//        }
+        if (MARK.contains("meizu")) {
+            intent = meiZuApi(mSource);
         } else {
             intent = defaultApi(mSource);
         }
+
         try {
             mSource.startActivityForResult(intent, requestCode);
         } catch (Exception e) {
