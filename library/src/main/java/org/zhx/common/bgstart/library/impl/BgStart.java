@@ -72,7 +72,7 @@ public class BgStart {
         }
     }
 
-    public void startActivity(final Activity context, final Intent intent, final String className) {
+    public void startActivity(final Context context, final Intent intent, final String className) {
         if (context == null || intent == null || TextUtils.isEmpty(className)) {
             return;
         }
@@ -119,7 +119,7 @@ public class BgStart {
         }
     }
 
-    private void nomalCheck(Activity context, Intent intent, final String className) {
+    private void nomalCheck(Context context, Intent intent, final String className) {
         context.startActivity(intent);
         Log.e(TAG, "普通_跳转成功 " + System.currentTimeMillis());
         checkIntent(className, new ActivityCheckLisenter() {
@@ -176,7 +176,7 @@ public class BgStart {
     }
 
 
-    private void startMiuiByFloat(Activity context, Intent intent, String className) {
+    private void startMiuiByFloat(Context context, Intent intent, String className) {
         if (Miui.isAllowed(context)) {
             // 已经有 【后台启动页面】
             context.startActivity(intent);
@@ -192,7 +192,7 @@ public class BgStart {
      * @param activity
      * @param notifyIntent
      */
-    private void notifyMiUi(Activity activity, Intent notifyIntent) {
+    private void notifyMiUi(Context activity, Intent notifyIntent) {
         if (mBuilder != null) {
             //实例化通知栏构造器。
             notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

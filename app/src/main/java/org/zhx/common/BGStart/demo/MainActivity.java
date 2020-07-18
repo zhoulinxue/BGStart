@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Log.e("BgStart", "开始跳转 " + System.currentTimeMillis());
                 Intent intent = new Intent(MainActivity.this, TargetActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 BgStart.getInstance().startActivity(MainActivity.this, intent, TargetActivity.class.getName());
             }
         }, 1000);

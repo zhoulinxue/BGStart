@@ -28,14 +28,17 @@ import org.zhx.common.bgstart.library.impl.BgStart;
 public class BgManager implements Application.ActivityLifecycleCallbacks {
     private int activityCount = 0;
     private String TAG = BgManager.class.getSimpleName();
-    private static BgManager manager;
+    private static volatile BgManager manager=null;
     private AppStateCallback mCallback;
     private Application.ActivityLifecycleCallbacks mlifcycle;
-    private NotificationCompat.Builder mBuilder;
 
     public static BgManager getInstance() {
         if (manager == null) {
-            manager = new BgManager();
+            synchronized (BgManager.class) {
+                if (manager == null) {
+                    manager = new BgManager();
+                }
+            }
         }
         return manager;
     }
