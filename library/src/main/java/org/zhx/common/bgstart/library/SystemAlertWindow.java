@@ -28,9 +28,7 @@ public class SystemAlertWindow {
 
     public void start(int requestCode) {
         Intent intent;
-        if (MARK.contains("huawei")) {
-            intent = huaweiApi(mSource);
-        } else if (MARK.contains("xiaomi")) {
+         if (MARK.contains("xiaomi")) {
             intent = xiaomiApi(mSource);
         } else if (MARK.contains("oppo")) {
             intent = oppoApi(mSource);

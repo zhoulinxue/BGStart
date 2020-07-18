@@ -31,7 +31,6 @@ public class BgManager implements Application.ActivityLifecycleCallbacks {
     private static volatile BgManager manager=null;
     private AppStateCallback mCallback;
     private Application.ActivityLifecycleCallbacks mlifcycle;
-    private NotificationCompat.Builder mBuilder;
 
     public static BgManager getInstance() {
         if (manager == null) {
