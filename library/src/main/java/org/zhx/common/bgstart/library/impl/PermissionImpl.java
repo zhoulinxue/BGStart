@@ -35,9 +35,12 @@ public class PermissionImpl implements PermissionServer {
             mSource = new FloatSource();
         }
         boolean isShowNotice = false;
-        if (params != null) {
+        if ("oppo".equals(MARK)) {
+            isShowNotice = true;
+        }
+        if (params != null && !isShowNotice) {
             for (String str : params) {
-                if (MARK.equals(str) || "oppo".equals(str)) {
+                if (MARK.equals(str)) {
                     isShowNotice = true;
                 }
             }
