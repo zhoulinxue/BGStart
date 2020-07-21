@@ -42,7 +42,7 @@ android.enableJetifier=true
 @Override
     public void onCreate() {
         super.onCreate();
-      BgManager.getInstance().init(this,null,this);
+      BgManager.getInstance().init(this);
     }
 ```
 
