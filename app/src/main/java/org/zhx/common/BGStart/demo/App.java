@@ -32,7 +32,7 @@ public class App extends Application {
         // 以下 三种初始化方式  3选1 即可
 //        BgManager.getInstance().init(this);
         // 如果您的应用 实现了  Application.ActivityLifecycleCallbacks 接口
-        //BgManager.getInstance().init(this,null,this);
+//        BgManager.getInstance().init(this,activityLifecycleCallbacks);
         //如果你想监听 app 前后台 状态切换
         BgManager.getInstance().init(this,  null, new AppStateCallback() {
             @Override
