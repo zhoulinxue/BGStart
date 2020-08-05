@@ -89,6 +89,6 @@ BgStart.getInstance().requestStartPermisstion(this, new PermissionLisenter() {
 ```
 4、当需要 后台启动页面时 调用以下代码：
 ```
-   Intent intent = new Intent(MainActivity.this, TargetActivity.class);
-                 BgStart.getInstance().startActivity(MainActivity.this, intent, TargetActivity.class.getName());
+   Intent intent = new Intent(getApplicationContext(), TargetActivity.class);
+   BgStart.getInstance().startActivity(getApplicationContext(), intent, TargetActivity.class.getName());
 ```
