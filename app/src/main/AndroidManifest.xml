@@ -21,7 +21,6 @@
         <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
         <activity android:name=".TargetActivity" />
 
-        <service android:name=".NotificationService" />
     </application>
 
 </manifest>

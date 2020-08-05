@@ -1,5 +1,4 @@
 # BGStart
-### 优化体验正在进行 预热1.2.0版本  新增 来电展示效果
 lib for miui 、AndroidQ  background startActivity
 
 ## 集成：
