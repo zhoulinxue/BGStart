@@ -1,7 +1,7 @@
 # BGStart
 lib for miui 、AndroidQ  background startActivity
 
-## 新增（1.1.3）
+### 新增 自定义权限弹窗（1.1.3）
 ```
   BgManager.getInstance().init(this, new ShowSource() {
             @Override
