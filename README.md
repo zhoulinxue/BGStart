@@ -12,7 +12,7 @@ allprojects {
 Androidx:
 ```
 	dependencies {
-	      implementation 'org.zhx.common:bgStart:1.1.2'
+	      implementation 'org.zhx.common:bgStart:1.1.3'
 	}
 ```
 注意：appcompat （未使用Androidx）引用：
