@@ -44,26 +44,70 @@ public class BgManager implements Application.ActivityLifecycleCallbacks {
         return manager;
     }
 
+    /**
+     * @param app
+     */
     public void init(Application app) {
         init(app, null, null, null);
     }
 
-    public void init(Application app, AppStateCallback callback, ShowSource source) {
-        init(app, null, callback, source);
-    }
-
-    public void init(Application app, ShowSource source) {
-        init(app, null, null, source);
-    }
-
+    /**
+     * app 前后台切换
+     *
+     * @param app
+     * @param callback app 前后台切花
+     */
     public void init(Application app, AppStateCallback callback) {
-        init(app, callback);
+        init(app, callback, null);
     }
 
+    /**
+     * activity  生命周期 监听
+     *
+     * @param app
+     * @param callback  activity 生命周期
+     */
     public void init(Application app, Application.ActivityLifecycleCallbacks callback) {
         init(app, callback, null, null);
     }
 
+    /**
+     * @param app
+     * @param lifecycleCallbacks activity 生命周期
+     * @param showSource  自定义弹窗
+     */
+    public void init(Application app, Application.ActivityLifecycleCallbacks lifecycleCallbacks, ShowSource showSource) {
+        init(app, lifecycleCallbacks, null, showSource);
+    }
+
+    /**
+     * app 前后台切换  自定义弹窗
+     *
+     * @param app
+     * @param callback 前后台切换
+     * @param source 自定义弹窗
+     */
+    public void init(Application app, AppStateCallback callback, ShowSource source) {
+        init(app, null, callback, source);
+    }
+
+    /**
+     * app 自定义弹窗
+     *
+     * @param app
+     * @param source 自定义 弹窗
+     */
+    public void init(Application app, ShowSource source) {
+        init(app, null, null, source);
+    }
+
+    /**
+     *
+     * @param app
+     * @param lifecycleCallbacks  activity 生命周期
+     * @param callback app 前后台切换
+     * @param mSource 自定义 弹窗
+     */
     public void init(Application app, Application.ActivityLifecycleCallbacks lifecycleCallbacks, AppStateCallback callback, ShowSource mSource) {
         this.mlifcycle = lifecycleCallbacks;
         this.mCallback = callback;
