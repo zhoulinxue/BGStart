@@ -1,12 +1,12 @@
 # BGStart
 lib for miui 、AndroidQ  background startActivity
 
-## 新增
+## 新增（1.1.3）
 ```
   BgManager.getInstance().init(this, new ShowSource() {
             @Override
             public void show(Activity context, final PermissionLisenter permissionListener) {
-                // 弹出 权限提醒界面
+                // 弹出 权限提醒 弹窗
                 new AlertDialog.Builder(context).setCancelable(false)
                         .setTitle(org.zhx.common.bgstart.library.R.string.title_dialog)
                         .setMessage(org.zhx.common.bgstart.library.R.string.message_overlay_failed)
