@@ -23,6 +23,7 @@ import org.zhx.common.bgstart.library.SystemAlertWindow;
 import org.zhx.common.bgstart.library.api.ActivityCheckLisenter;
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
 import org.zhx.common.bgstart.library.api.PermissionServer;
+import org.zhx.common.bgstart.library.api.ShowSource;
 import org.zhx.common.bgstart.library.utils.Miui;
 import org.zhx.common.bgstart.library.utils.NotificationsUtils;
 import org.zhx.common.bgstart.library.utils.PermissionUtil;
@@ -46,18 +47,19 @@ public class BgStart {
     private PermissionServer mServer;
     private static BgStart overLay = new BgStart();
     private NotificationCompat.Builder mBuilder;
+    private ShowSource mSource;
 
 
     public static BgStart getInstance() {
         return overLay;
     }
 
-    public void init(Context context, NotificationCompat.Builder builder) {
+    public void init(Context context, NotificationCompat.Builder builder, ShowSource mSource) {
         this.mBuilder = builder;
         if (nm == null) {
             nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             createUrgentNotificationChannel();
-            mServer = new PermissionImpl();
+            mServer = new PermissionImpl(mSource);
         }
     }
 

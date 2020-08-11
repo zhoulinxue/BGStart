@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import org.zhx.common.bgstart.library.api.AppStateCallback;
+import org.zhx.common.bgstart.library.api.ShowSource;
 import org.zhx.common.bgstart.library.impl.BgStart;
 
 /**
@@ -28,7 +29,7 @@ import org.zhx.common.bgstart.library.impl.BgStart;
 public class BgManager implements Application.ActivityLifecycleCallbacks {
     private int activityCount = 0;
     private String TAG = BgManager.class.getSimpleName();
-    private static volatile BgManager manager=null;
+    private static volatile BgManager manager = null;
     private AppStateCallback mCallback;
     private Application.ActivityLifecycleCallbacks mlifcycle;
 
@@ -44,7 +45,15 @@ public class BgManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public void init(Application app) {
-        init(app, null, null);
+        init(app, null, null, null);
+    }
+
+    public void init(Application app, AppStateCallback callback, ShowSource source) {
+        init(app, null, callback, source);
+    }
+
+    public void init(Application app, ShowSource source) {
+        init(app, null, null, source);
     }
 
     public void init(Application app, AppStateCallback callback) {
@@ -52,16 +61,16 @@ public class BgManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public void init(Application app, Application.ActivityLifecycleCallbacks callback) {
-        init(app, callback, null);
+        init(app, callback, null, null);
     }
 
-    public void init(Application app, Application.ActivityLifecycleCallbacks lifecycleCallbacks, AppStateCallback callback) {
+    public void init(Application app, Application.ActivityLifecycleCallbacks lifecycleCallbacks, AppStateCallback callback, ShowSource mSource) {
         this.mlifcycle = lifecycleCallbacks;
         this.mCallback = callback;
         if (app != null) {
             if (isMainProcess(app)) {
                 app.registerActivityLifecycleCallbacks(this);
-                BgStart.getInstance().init(app, null);
+                BgStart.getInstance().init(app, null, mSource);
             }
         }
 

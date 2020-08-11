@@ -26,14 +26,18 @@ public class PermissionImpl implements PermissionServer {
     private ShowSource mSource;
     private static final String MARK = Build.MANUFACTURER.toLowerCase();
 
+    public PermissionImpl(ShowSource mSource) {
+        this.mSource = mSource;
+    }
+
     @Override
     public void checkPermisstion(final Activity activity, final PermissionLisenter lisenter, String... params) {
-
-        if (Miui.isMIUI()) {
-            mSource = new MiuiSource();
-        } else {
-            mSource = new FloatSource();
-        }
+        if (mSource == null)
+            if (Miui.isMIUI()) {
+                mSource = new MiuiSource();
+            } else {
+                mSource = new FloatSource();
+            }
         boolean isShowNotice = false;
         if ("oppo".equals(MARK)) {
             isShowNotice = true;
