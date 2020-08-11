@@ -53,7 +53,7 @@ public class App extends Application {
         BgManager.getInstance().init(this, new ShowSource() {
             @Override
             public void show(Activity context, final PermissionLisenter permissionListener) {
-                // 弹出 权限体系界面
+                // 弹出 权限提醒界面
                 new AlertDialog.Builder(context).setCancelable(false)
                         .setTitle(org.zhx.common.bgstart.library.R.string.title_dialog)
                         .setMessage(org.zhx.common.bgstart.library.R.string.message_overlay_failed)
