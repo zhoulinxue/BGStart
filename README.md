@@ -3,6 +3,7 @@ lib for miui 、AndroidQ  background startActivity
 
 ### 新增 自定义权限弹窗（1.1.3）
 ```
+// application 初始化代码
   BgManager.getInstance().init(this, new ShowSource() {
             @Override
             public void show(Activity context, final PermissionLisenter permissionListener) {
