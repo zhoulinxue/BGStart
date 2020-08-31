@@ -178,7 +178,7 @@ public class BgStart {
     }
 
 
-    private void startMiuiByFloat(Context context, Intent intent, String className, boolean needCheck) {
+    private void startMiuiByFloat(final Context context, Intent intent, String className, boolean needCheck) {
         if (Miui.isAllowed(context)) {
             // 已经有 【后台启动页面】
             context.startActivity(intent);
@@ -189,7 +189,9 @@ public class BgStart {
                         if (isSuc) {
                             Log.e(TAG, "Miui_跳转成功 " + System.currentTimeMillis());
                         } else {
-                            Log.e(TAG, "Miui_跳转失败, 没有获取 【悬浮窗】 的权限");
+                            if (!PermissionUtil.hasPermission(context)) {
+                                Log.e(TAG, "Miui_跳转失败, 没有获取 【悬浮窗】 的权限");
+                            }
                         }
                     }
                 });

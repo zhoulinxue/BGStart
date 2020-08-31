@@ -1,6 +1,12 @@
 # BGStart
 lib for miui 、AndroidQ  background startActivity
 
+### 新增 1.1.4  新增  界面打开和关闭日志
+```
+
+
+```
+
 ### 新增 自定义权限弹窗（1.1.3）
 ```
 // application 初始化代码

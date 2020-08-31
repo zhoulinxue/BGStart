@@ -25,7 +25,7 @@ public class MiuiSource implements ShowSource {
                 .setPositiveButton(R.string.setting, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO go setting page
+                        //TODO go to setting page
                         if(permissionListener!=null){
                             permissionListener.onGranted();
                         }
