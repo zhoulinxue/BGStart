@@ -96,7 +96,7 @@ public class BgStart {
                     public void startResult(boolean isSuc) {
                         // 使用通知 启动 页面失败
                         if (!isSuc) {
-                            startMiuiByFloat(context, intent, className);
+                            startMiuiByFloat(context, intent, className, false);
                         } else {
                             Log.e(TAG, "notify_跳转成功");
                             nm.cancel(NOTIFY_FLAGS);
@@ -104,7 +104,7 @@ public class BgStart {
                     }
                 });
             } else {
-                startMiuiByFloat(context, intent, className);
+                startMiuiByFloat(context, intent, className, true);
             }
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -178,11 +178,22 @@ public class BgStart {
     }
 
 
-    private void startMiuiByFloat(Context context, Intent intent, String className) {
+    private void startMiuiByFloat(Context context, Intent intent, String className, boolean needCheck) {
         if (Miui.isAllowed(context)) {
             // 已经有 【后台启动页面】
             context.startActivity(intent);
-            Log.e(TAG, "Miui_跳转成功 " + System.currentTimeMillis());
+            if (needCheck) {
+                checkIntent(className, new ActivityCheckLisenter() {
+                    @Override
+                    public void startResult(boolean isSuc) {
+                        if (isSuc) {
+                            Log.e(TAG, "Miui_跳转成功 " + System.currentTimeMillis());
+                        } else {
+                            Log.e(TAG, "Miui_跳转失败, 没有获取 【悬浮窗】 的权限");
+                        }
+                    }
+                });
+            }
         } else {
             Log.e(TAG, className + "页面启动失败，没有获取 【后台启动页面】 的权限...");
         }
