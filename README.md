@@ -1,10 +1,12 @@
 # BGStart
 lib for miui 、AndroidQ  background startActivity
 
-### 新增 1.1.4  新增  界面打开和关闭日志
+### 新增 1.1.4  新增  界面打开成功、失败日志
 ```
-
-
+  // 成功
+    Log.e(TAG, "Miui_跳转成功 " + System.currentTimeMillis());
+    //失败
+    Log.e("BgStart", "Miui_跳转失败, 没有获取 【悬浮窗】 的权限");
 ```
 
 ### 新增 自定义权限弹窗（1.1.3）
