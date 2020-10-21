@@ -2,14 +2,14 @@ package org.zhx.common.BGStart.demo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 
 import org.zhx.common.bgstart.library.api.PermissionLisenter;
-import org.zhx.common.bgstart.library.api.ShowSource;
 import org.zhx.common.bgstart.library.impl.BgStart;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //机型适配  可以使用 如下方式 完成 适配（当发现不能正常弹出 权限弹窗，又不能正常调起页面）
+        //
+        //   比如 oppo 手机  直接在 方法后面加参数 如 【"huawei"， "oppo"， "vivo"，"meizu"】
         BgStart.getInstance().requestStartPermisstion(this, new PermissionLisenter() {
             @Override
             public void onGranted() {
@@ -35,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDenied() {
                 Log.e(TAG, "onDenied");
             }
-        });
-
+        },"vivo");
     }
 
     @Override
