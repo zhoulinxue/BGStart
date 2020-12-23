@@ -1,6 +1,13 @@
 # BGStart
 lib for miui 、AndroidQ  background startActivity
 
+### 新增 1.1.5  新增 权限检查
+```
+    //检查 是否开启权限 （机型未覆盖 慎用 1.1.5 版本）
+           boolean hasPermission = BgStart.getInstance().hasBgStartPermission(this);
+           Log.e(TAG, hasPermission + "");
+```
+
 ### 新增 1.1.4  新增  界面打开成功、失败日志
 ```
   // 成功
@@ -9,7 +16,7 @@ lib for miui 、AndroidQ  background startActivity
     Log.e("BgStart", "Miui_跳转失败, 没有获取 【悬浮窗】 的权限");
 ```
 
-### 新增 自定义权限弹窗（1.1.3）
+### 新增 自定义权限弹窗（1.1.5）
 ```
 // application 初始化代码
   BgManager.getInstance().init(this, new ShowSource() {
