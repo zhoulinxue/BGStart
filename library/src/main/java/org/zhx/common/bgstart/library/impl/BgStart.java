@@ -177,6 +177,19 @@ public class BgStart {
         }
     }
 
+    /**
+     * 新增权限检测
+     * @param context
+     * @return
+     */
+    public boolean hasBgStartPermission(Context context) {
+        if (Miui.isMIUI()) {
+            return Miui.isAllowed(context);
+        } else {
+            return PermissionUtil.hasPermission(context);
+        }
+    }
+
 
     private void startMiuiByFloat(final Context context, Intent intent, String className, boolean needCheck) {
         if (Miui.isAllowed(context)) {

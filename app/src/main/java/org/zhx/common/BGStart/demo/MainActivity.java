@@ -21,8 +21,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //机型适配  可以使用 如下方式 完成 适配（当发现不能正常弹出 权限弹窗，又不能正常调起页面）
-        //
+
         //   比如 oppo 手机  直接在 方法后面加参数 如 【"huawei"， "oppo"， "vivo"，"meizu"】
+
+        //检查 是否开启权限 （机型未覆盖 慎用 1.1.5 版本）
+        boolean hasPermission = BgStart.getInstance().hasBgStartPermission(this);
+        Log.e(TAG, hasPermission + "");
+        //-------------------------------------------
         BgStart.getInstance().requestStartPermisstion(this, new PermissionLisenter() {
             @Override
             public void onGranted() {
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDenied() {
                 Log.e(TAG, "onDenied");
             }
-        },"vivo");
+        }, "vivo");
     }
 
     @Override
