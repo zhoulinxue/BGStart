@@ -51,14 +51,14 @@ lib for miui 、AndroidQ  background startActivity
 ```
 allprojects {
     repositories {      
-        jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 ```
 Androidx:
 ```
 	dependencies {
-	      implementation 'org.zhx.common:bgStart:1.1.3'
+	       implementation 'com.github.zhoulinxue:BGStart:1.1.5'
 	}
 ```
 注意：appcompat （未使用Androidx）引用：

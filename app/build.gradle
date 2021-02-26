@@ -23,31 +23,8 @@ android {
     lintOptions { // 新增
         abortOnError false
     }
-//    if (bugTypeIsBeta()) {
-//        android.applicationVariants.all { variant ->
-//            variant.outputs.each { output ->
-//                output.processManifest.doLast {
-//                    String manifestPath = "$manifestOutputDirectory/AndroidManifest.xml"
-//                    def manifestContent = file(manifestPath).getText('UTF-8')
-//                    manifestContent = manifestContent.replaceAll("android:testOnly=\"true\"", "android:testOnly=\"false\"")
-//                    file(manifestPath).write(manifestContent, 'UTF-8')
-//                }
-//            }
-//        }
-//    }
 
 }
-//判断是否是线上包（仅通过jenkins的release任务打包或者手动设置BUG_TYPE环境变量或者bugType属性）
-def bugTypeIsBeta() {
-    if (System.getenv("BUG_TYPE") == "BUG_TYPE_LIVE") {
-        return false
-    }
-    if (hasProperty("bugType") && getProperty("bugType") == "BUG_TYPE_LIVE") {
-        return false
-    }
-    return true
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -57,6 +34,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation project(path: ':library')
-//    implementation 'org.zhx.common:bgStart:1.1.2'
+//    implementation project(path: ':library')
+    implementation 'com.github.zhoulinxue:BGStart:1.1.5'
 }
